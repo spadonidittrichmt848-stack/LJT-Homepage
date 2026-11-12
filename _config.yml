@@ -192,6 +192,15 @@ exclude:
   - README
   - tmp
   - vendor
+  # Template development tools - kept in the repository, not published on the site
+  - AGENTS.md
+  - docker-compose.yaml
+  - markdown_generator
+  - scripts
+  - talkmap
+  - talkmap.ipynb
+  - talkmap.py
+  - talkmap_out.ipynb
 keep_files:
   - .git
   - .svn
