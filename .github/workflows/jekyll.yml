@@ -11,7 +11,7 @@ on:
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -26,8 +26,7 @@ jobs:
   build:
     runs-on: ubuntu-24.04
     outputs:
-      # Pages has to be enabled once in Settings > Pages (source: GitHub Actions)
-      # before the workflow token is allowed to deploy to it.
+      # True once the repository has a GitHub Pages site that accepts Actions deployments.
       pages_enabled: ${{ steps.pages.outcome == 'success' }}
     steps:
       - name: Checkout
@@ -55,11 +54,26 @@ jobs:
           enablement: true
       - name: Build with Jekyll
         # Outputs to the './_site' directory by default
-        run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path || '/LJT-Homepage' }}"
+        run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path || format('/{0}', github.event.repository.name) }}"
         env:
           JEKYLL_ENV: production
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v5.0.0
+      # Fallback for repositories where GitHub Pages has not been enabled for
+      # Actions deployments yet: publish the built site from the gh-pages branch.
+      - name: Publish built site to the gh-pages branch
+        if: ${{ steps.pages.outcome != 'success' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd _site
+          touch .nojekyll
+          git init -b gh-pages
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Publish site built from ${GITHUB_SHA}"
+          git push --force "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" gh-pages
 
   # Deployment job
   deploy:
