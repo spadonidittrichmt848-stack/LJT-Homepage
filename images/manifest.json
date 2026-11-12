@@ -1,0 +1,19 @@
+{
+	"name": "Junteng Liu",
+	"short_name": "Junteng Liu",
+	"description": "Personal homepage of Junteng Liu, first-year PhD candidate at the HKUST NLP Group.",
+	"start_url": "/LJT-Homepage",
+	"lang": "en-US",
+	"icons": [
+		{
+			"src": "/LJT-Homepage/images/favicon-192x192.png",
+			"sizes": "192x192",
+			"type": "image/png"
+		},
+		{
+			"src": "/LJT-Homepage/images/favicon-512x512.png",
+			"sizes": "512x512",
+			"type": "image/png"
+		}
+	]
+}
