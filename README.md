@@ -17,4 +17,13 @@ The site is built with Jekyll using the [Academic Pages](https://github.com/acad
 
 ## Deployment
 
-Pushes to `master` are built and published to GitHub Pages by `.github/workflows/jekyll.yml`.
+Pushes to `master` are built by `.github/workflows/jekyll.yml`. The workflow uploads the built site as a
+GitHub Pages artifact and also publishes it to the `gh-pages` branch.
+
+GitHub Pages has to be enabled once for this repository (Settings → Pages) before the site is served at
+<https://spadonidittrichmt848-stack.github.io/LJT-Homepage/>. Either publishing source works:
+
+- **Deploy from a branch** — `gh-pages` / `/ (root)`; the workflow keeps this branch up to date.
+- **GitHub Actions** — the workflow deploys the built artifact directly.
+
+To preview locally: `bundle install` and then `bundle exec jekyll serve`.
